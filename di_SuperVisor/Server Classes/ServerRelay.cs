@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net.Sockets;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Net;
 
 namespace NETCOM
 {
     /// <summary>
-    /// This class is provided to handle any connection requests from clients 
+    /// This class is provided to handle any connection requests from clients
     /// This class is capable of sending a broadcast message to all connected agents...
     /// </summary>
     public class ServerRelay : NetComm
     {
         public delegate void NewAgentConnected(AgentRelay agentRelay);
+
         public delegate void ServerFailedToAcceptConnection(Exception ex);
+
         public event NewAgentConnected OnNewAgentConnected;                             // Handle this event immedietly
+
         public event ServerFailedToAcceptConnection OnServerFailedToAcceptConnection;   // Handle this event immedietly
 
         private static List<AgentRelay> m_Agents = new List<AgentRelay>();
@@ -140,7 +139,7 @@ namespace NETCOM
                 {
                     for (int i = 0; i < m_Agents.Count; i++)
                     {
-                        // It is clear, if the other side is not accessable, it will become Faulty 
+                        // It is clear, if the other side is not accessable, it will become Faulty
                         // so there is no need to check handshake result for that.
                         try { m_Agents[i].StartHandshakeAsync(); }
                         catch { }
@@ -183,7 +182,6 @@ namespace NETCOM
             }
         }
 
-
         /// <summary>
         /// It will send all connected clients a specific message
         /// </summary>
@@ -215,4 +213,3 @@ namespace NETCOM
         }
     }
 }
-

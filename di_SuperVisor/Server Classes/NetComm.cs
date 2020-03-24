@@ -15,12 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Threading;
-using System.Runtime.InteropServices;
 using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace NETCOM
 {
@@ -85,9 +83,11 @@ namespace NETCOM
                 }
             }
         }
-        #endregion
+
+        #endregion Properties
 
         #region Body
+
         ~NetComm()
         {
             Dispose();
@@ -109,7 +109,6 @@ namespace NETCOM
             m_bIsRawAgent = bIsRawAgent;
         }
 
-
         protected bool IS_SOCKET_FAULTY(SocketError retVal)
         {
             return (retVal != SocketError.IsConnected
@@ -119,7 +118,6 @@ namespace NETCOM
                 && retVal != SocketError.NoData
                 && retVal != SocketError.Success);
         }
-
 
         /// <summary>
         /// Connects to server
@@ -229,10 +227,9 @@ namespace NETCOM
             SAFECLOSE(m_RawSocket);
         }
 
-
         /// <summary>
         /// Reads in-buffer to the end
-        /// Because it is possible to start receiving at the very last seconds of the timeout, 
+        /// Because it is possible to start receiving at the very last seconds of the timeout,
         /// we wait extra 500 m.sec to ensure there is no more data available...
         /// </summary>
         protected bool ReadAllReceivedBytes(out byte[] buffer, int timeoutInMS)
@@ -254,7 +251,7 @@ namespace NETCOM
                 if (buffer == null && (DateTime.Now - dtStart) > ts)
                     break;
 
-                // Because it is possible to start receiving at the very last seconds of the timeout, 
+                // Because it is possible to start receiving at the very last seconds of the timeout,
                 // we wait extra 500 m.sec to ensure there is no more data available...
                 // NOTE: We dont check for (DateTime.Now - dtStart)>ts because 99% all packet is received
                 if (buffer != null && (DateTime.Now - dtLastSeenData) > TimeSpan.FromMilliseconds(500))
@@ -309,14 +306,14 @@ namespace NETCOM
             array.Clear();
             return true;
 
-
         RETURN_WITH_FAILURE:
             for (int i = 0; i < array.Count; i++)
                 array[i] = null;
             array.Clear();
             return false;
         }
-        #endregion
+
+        #endregion Body
 
         #region Some Helpers
 
@@ -363,7 +360,6 @@ namespace NETCOM
             Marshal.FreeHGlobal(ptr);
 
             return arr;
-
         }
 
         /// <summary>
@@ -404,6 +400,7 @@ namespace NETCOM
             m_FaultyFlag = true;
             return false;
         }
-        #endregion
+
+        #endregion Some Helpers
     }
 }

@@ -15,21 +15,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Runtime.InteropServices;
-using System.Net;
 
 namespace NETCOM
 {
-    public class RawAgentRelay:NetComm
+    public class RawAgentRelay : NetComm
     {
         public delegate void NewPacketReceived(byte[] packet, RawAgentRelay agentRelay);
+
         private Queue<byte> m_ReceivedBytes = new Queue<byte>(1024);
         public NewPacketReceived OnNewPacketReceived;
-            
+
         private Thread m_WorkerThread = null;
         private AutoResetEvent m_evStop;
         private AutoResetEvent m_evDataReceived;
@@ -156,8 +154,8 @@ namespace NETCOM
         {
             DateTime dtExpire = DateTime.Now + TimeSpan.FromMilliseconds(timeoutMs);
 
-            List<byte> readBuffer=new List<byte>();
-            buffer=null;
+            List<byte> readBuffer = new List<byte>();
+            buffer = null;
             do
             {
                 lock (m_ReceivedBytes)

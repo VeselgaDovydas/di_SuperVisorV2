@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Threading;
-using System.Runtime.InteropServices;
 using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace NETCOM
 {
     /// <summary>
-    /// This class is provided to handle communication between client/server 
+    /// This class is provided to handle communication between client/server
     /// Each command is sent/received in a PACKET form which makes it more efficient to control
     /// </summary>
     public class AgentRelay : NetComm
     {
         // Event handlers
         public delegate void NewPacketReceived(Packet packet, AgentRelay agentRelay);
+
         public event NewPacketReceived OnNewPacketReceived;
 
         // These commands are fixed and used in AgentRelay class for internal control process.
         private const byte HANDSHAKEREQUEST_CMDCODE = 255;
+
         private const byte HANDSHAKERESPONSE_CMDCODE = 254;
         private const byte INVALID_CMDCODE = 253;
         private const byte SUCCESS_CMDCODE = 252;
@@ -40,11 +40,14 @@ namespace NETCOM
         {
             // Header
             [MarshalAs(UnmanagedType.I1)]
-            public byte Type=0;                             // =0; Reserved
+            public byte Type = 0;                             // =0; Reserved
+
             [MarshalAs(UnmanagedType.I2)]
-            public ushort FragmentIndex=0;                  // =0; Reserved
+            public ushort FragmentIndex = 0;                  // =0; Reserved
+
             [MarshalAs(UnmanagedType.I1)]
             public byte Command;                            // Command code
+
             [MarshalAs(UnmanagedType.I2)]
             public ushort DataLength;                       // Size of data to follow
 
@@ -64,7 +67,7 @@ namespace NETCOM
         private DateTime m_AsyncHandshakeStartTimeAsync;
         private eAsyncHandshakeResult m_AsyncHandshakeResult = eAsyncHandshakeResult.Success;
 
-        private object m_UserData = null; 
+        private object m_UserData = null;
 
         public object UserData
         {
@@ -76,7 +79,6 @@ namespace NETCOM
         {
             get { return (m_dtLastHandshake != null) ? m_AsyncHandshakeResult : eAsyncHandshakeResult.NoHandshakeOccured; }
         }
-
 
         public override void Dispose()
         {
@@ -122,6 +124,7 @@ namespace NETCOM
         {
             m_FaultyFlag = false;
         }
+
         /// <summary>
         /// If you want this class do the job and dispatch received packets, call this method
 
@@ -181,7 +184,6 @@ namespace NETCOM
 
             base.Disconnect();
         }
-
 
         public void StartHandshakeAsync()
         {
@@ -255,11 +257,10 @@ namespace NETCOM
             // Restore previouse state
             if (m_FaultyFlag)
                 m_dtLastHandshake = prevLastHandshakeRequest;
-
         }
 
         /// <summary>
-        /// Main Thread when we are in server mode. 
+        /// Main Thread when we are in server mode.
         /// Here we always monitor to see if there is any thing ready to receive and if yes, we will pick it up.
         /// NOTE: If the connection become faulty, it will return and stop working
         /// </summary>
@@ -293,7 +294,7 @@ namespace NETCOM
                         }
                     }
                 }
-                catch 
+                catch
                 {
                     m_FaultyFlag = true;
                 }
@@ -401,7 +402,7 @@ namespace NETCOM
         }
 
         /// <summary>
-        /// If you dont like this class automatically handle the job and dispatch received packets, 
+        /// If you dont like this class automatically handle the job and dispatch received packets,
         /// you can periodically call this method to pickup every received packet
         /// </summary>
         /// <param name="packet"></param>
@@ -462,7 +463,7 @@ namespace NETCOM
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
